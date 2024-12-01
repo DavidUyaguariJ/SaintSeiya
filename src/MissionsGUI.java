@@ -77,6 +77,9 @@ public class MissionsGUI {
                 int id=0;
                 String reward,difficulty,power;
                 try{
+                    if(txtUpdate.getText()==null){
+                        throw new Exception("Valor incorrecto");
+                    }
                     id=Integer.parseInt(txtUpdate.getText());
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -94,7 +97,8 @@ public class MissionsGUI {
                     cbxDifficulty.setSelectedItem(difficulty);
                     cbxPower.setSelectedItem(power);
                     JOptionPane.showMessageDialog(null,"Modifica los datos en la parte superior");
-
+                }else{
+                    JOptionPane.showMessageDialog(null,"No existe ese ID");
                 }
             }
         });
