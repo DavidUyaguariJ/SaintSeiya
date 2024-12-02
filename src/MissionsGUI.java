@@ -21,6 +21,7 @@ public class MissionsGUI {
     private JButton actualizarButton;
     private KnightMissions knightMissions = new KnightMissions();
     private DefaultTableModel tableModel;
+    private static SodiacKnight sodiac;
     public MissionsGUI() {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Id");
@@ -50,22 +51,42 @@ public class MissionsGUI {
                 SodiacKnight sk= new SodiacKnight(
                         txtName.getText(),cbxRank.getSelectedItem().toString(),
                         txtConstellation.getText(),power,txtMission.getText(),reward,difficulty);
-                if(knightMissions.knightExist(sk.getId(),tableModel)){
-                    JOptionPane.showMessageDialog(null, "El caballero ya existe");
-                    boolean success=knightMissions.updateKnight(sk.getId(),sk,tableModel);
-                    if(success){
-                        JOptionPane.showMessageDialog(null, "se actualizo correctamente");
-                        clearTextBox();
+                if (sodiac!=null){
+                    if(knightMissions.knightExist(sodiac.getId(),tableModel)){
+                        JOptionPane.showMessageDialog(null, "El caballero ya existe");
+                        boolean success=knightMissions.updateKnight(sodiac.getId(),sk,tableModel);
+                        if(success){
+                            JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+                            clearTextBox();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error intenta nuevamente");
+                            clearTextBox();
+                        }
+
                     }else{
-                        JOptionPane.showMessageDialog(null, "Ocurrio un error intenta nuevamente");
+                        sk.calculateSanctuaryFund(reward);
+                        sk.calculateKingdomTaxes(reward);
+                        knightMissions.add(sk,tableModel);
                         clearTextBox();
                     }
-
                 }else{
-                    sk.calculateSanctuaryFund(reward);
-                    sk.calculateKingdomTaxes(reward);
-                    knightMissions.add(sk,tableModel);
-                    clearTextBox();
+                    if(knightMissions.knightExist(sk.getId(),tableModel)){
+                        JOptionPane.showMessageDialog(null, "El caballero ya existe");
+                        boolean success=knightMissions.updateKnight(sk.getId(),sk,tableModel);
+                        if(success){
+                            JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+                            clearTextBox();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error intenta nuevamente");
+                            clearTextBox();
+                        }
+
+                    }else{
+                        sk.calculateSanctuaryFund(reward);
+                        sk.calculateKingdomTaxes(reward);
+                        knightMissions.add(sk,tableModel);
+                        clearTextBox();
+                    }
                 }
 
 
@@ -77,7 +98,7 @@ public class MissionsGUI {
                 int id=0;
                 String reward,difficulty,power;
                 try{
-                    if(txtUpdate.getText()==null){
+                    if(txtUpdate.getText()==""){
                         throw new Exception("Valor incorrecto");
                     }
                     id=Integer.parseInt(txtUpdate.getText());
@@ -96,6 +117,7 @@ public class MissionsGUI {
                     txtReward.setText(reward);
                     cbxDifficulty.setSelectedItem(difficulty);
                     cbxPower.setSelectedItem(power);
+                    sodiac=sk;
                     JOptionPane.showMessageDialog(null,"Modifica los datos en la parte superior");
                 }else{
                     JOptionPane.showMessageDialog(null,"No existe ese ID");

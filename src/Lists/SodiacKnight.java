@@ -3,7 +3,8 @@ package Lists;
 import Interfaces.Knight;
 
 public class SodiacKnight implements Knight {
-    private static int id=0;
+    private static int counterId = 1;
+    private int id;
     private String name;
     private String rank;
     private String constellation;
@@ -15,7 +16,8 @@ public class SodiacKnight implements Knight {
     private int difficulty;
 
     public SodiacKnight(String name, String rank, String constellation, int power, String mission, double reward, int difficulty) {
-        this.id = id++;
+        counterId++;
+        this.id = counterId;
         this.name = name;
         this.rank = rank;
         this.constellation = constellation;
